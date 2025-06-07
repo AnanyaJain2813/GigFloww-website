@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIGFLOWW Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Global Variables and Resets */
+        :root {
+            --primary-blue: #007bff; /* A blue for active states/buttons */
+            --light-blue: #e8f0fe; /* Lighter blue for nav active background */
+            --text-dark: #333;
+            --text-light: #666;
+            --text-grey: #999;
+            --border-color: #e0e0e0;
+            --background-grey: #f5f7f9;
+            --card-background: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --red-badge: #dc3545;
+            --success-green: #28a745;
+            --info-yellow: #ffc107;
+            --warning-orange: #fd7e14;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto auto 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .main-header {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            padding: 20px 30px;
+            background-color: var(--background-grey);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .main-header .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* --- Main Navigation (Sidebar) --- */
+        .main-nav {
+            grid-column: 1 / 2;
+            grid-row: 1 / 4;
+            background-color: var(--card-background);
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            margin-right: 10px;
+            background-color: var(--primary-blue);
+            object-fit: cover;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s, color 0.2s;
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .nav-icons {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background-grey);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 18px;
+            margin: 0 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .icon-circle:hover {
+            background-color: var(--border-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--red-badge);
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 50%;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+            margin-left: 10px;
+        }
+
+        /* --- Optimization Banner --- */
+        .optimization-banner {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            background-color: #fffbe6;
+            border: 1px solid #ffe0b3;
+            color: #8c6a00;
+            padding: 15px 25px;
+            margin: 20px 30px 0;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .optimization-banner i {
+            font-size: 18px;
+            margin-right: 15px;
+            color: var(--info-yellow);
+        }
+
+        .optimization-banner p {
+            margin: 0;
+        }
+
+        /* --- Main Content Grid Area --- */
+        .main-content-grid {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+            padding: 20px 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto 1fr;
+            gap: 20px;
+            align-items: start;
+            overflow-y: auto;
+        }
+
+        /* --- Welcome Section --- */
+        .welcome-section {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .welcome-header .date {
+            font-size: 14px;
+            color: var(--text-grey);
+        }
+
+        .welcome-header .date i {
+            margin-right: 5px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .summary-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .summary-card h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .summary-card .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        .employees-icon { background-color: #8e44ad; }
+        .hiring-icon { background-color: #27ae60; }
+        .projects-icon { background-color: #f39c12; }
+
+        .summary-card .card-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .summary-card .view-details {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .summary-card .view-details i {
+            font-size: 12px;
+        }
+
+        /* --- Performance Report --- */
+        .performance-report {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .performance-report .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .performance-report h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .performance-report .dropdown {
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .performance-report .chart-area {
+            position: relative;
+            width: 100%;
+            min-height: 200px;
+            background-color: #fcfcfc;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chart-area .chart-placeholder {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .chart-area .chart-labels {
+            display: flex;
+            justify-content: space-around;
+            font-size: 12px;
+            color: var(--text-grey);
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        /* --- Upcoming Actions --- */
+        .upcoming-actions {
+            grid-column: 2 / 3;
+            grid-row: 1 / 3;
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+        }
+
+        .upcoming-actions h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .action-item:last-child {
+            border-bottom: none;
+        }
+
+        .action-item .time {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            flex-shrink: 0;
+            width: 70px;
+        }
+
+        .action-item .action-details {
+            flex-grow: 1;
+        }
+
+        .action-item .action-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin: 0 0 3px 0;
+        }
+
+        .action-item .action-description {
+            font-size: 13px;
+            color: var(--text-grey);
+            margin: 0;
+        }
+
+        /* --- Incoming Application --- */
+        .incoming-application {
+            grid-column: 1 / 3;
+            grid-row: 3 / 4;
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .incoming-application .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .incoming-application h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .application-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn, .see-all-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--card-background);
+            color: var(--text-dark);
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .filter-btn i {
+            margin-right: 5px;
+        }
+
+        .filter-btn:hover, .see-all-btn:hover {
+            background-color: var(--background-grey);
+            border-color: var(--primary-blue);
+        }
+
+        .see-all-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .see-all-btn:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .application-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .application-card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .application-card .applicant-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .application-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .application-card .experience-label {
+            font-size: 13px;
+            color: var(--text-grey);
+            margin-bottom: 5px;
+        }
+
+        .application-card .experience-detail {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .application-card .experience-detail .company {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .application-card .date-applied {
+            font-size: 13px;
+            color: var(--text-grey);
+            margin-bottom: 15px;
+        }
+
+        .application-card .view-resume {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        .application-card .view-resume i {
+            font-size: 12px;
+        }
+
+        /* Basic Responsiveness */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto 1fr;
+            }
+
+            .main-nav {
+                grid-column: 1 / 2;
+                grid-row: 2 / 3;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 15px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+
+            .nav-brand {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                width: auto;
+            }
+
+            .nav-links li {
+                margin-bottom: 0;
+            }
+
+            .nav-links a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .nav-icons {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none;
+            }
+
+            .main-header {
+                grid-column: 1 / 2;
+                grid-row: 1 / 2;
+                border-bottom: none;
+            }
+
+            .optimization-banner {
+                grid-column: 1 / 2;
+                grid-row: 3 / 4;
+                margin: 15px 20px 0;
+            }
+
+            .main-content-grid {
+                grid-column: 1 / 2;
+                grid-row: 4 / 5;
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .welcome-section,
+            .performance-report,
+            .upcoming-actions,
+            .incoming-application {
+                grid-column: 1 / 2;
+                grid-row: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header .logo {
+                font-size: 20px;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .application-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .upcoming-actions h3,
+            .performance-report h3,
+            .incoming-application h3,
+            .welcome-header h2 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .optimization-banner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .optimization-banner i {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .welcome-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="main-header">
+            <h1 class="logo">GIGFLOWW dashboard</h1>
+        </header>
+
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <img src="https://via.placeholder.com/30x30?text=G" alt="GigFloww Logo" class="nav-logo">
+                <span class="nav-title">GIGFLOWW</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Dashboard</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="job-posting.html">Hiring</a></li>
+                <li><a href="salary.html">Salary</a></li>
+                <li><a href="#">Reviews</a></li>
+            </ul>
+            <div class="nav-icons">
+                <span class="icon-circle"><i class="fas fa-bell"></i><span class="notification-badge">1</span></span>
+                <span class="icon-circle"><i class="fas fa-cog"></i></span>
+                <img src="https://via.placeholder.com/40x40?text=P" alt="Profile Picture" class="profile-pic">
+            </div>
+        </nav>
+
+        <div class="optimization-banner">
+            <i class="fas fa-lightbulb"></i>
+            <p>Optimize your experience on Gigfloww - track your job post, manage teams and streamline hr operations effortlessly today!</p>
+        </div>
+
+        <div class="main-content-grid">
+            <section class="welcome-section">
+                <div class="welcome-header">
+                    <h2>Welcome Back, Nuraj group</h2>
+                    <span class="date"><i class="fas fa-calendar-alt"></i> Wed, 23 May 2025</span>
+                </div>
+
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-header">
+                            <h3>Employees</h3>
+                            <div class="card-icon employees-icon"><i class="fas fa-user-friends"></i></div>
+                        </div>
+                        <p class="card-value">24</p>
+                        <a href="people.html" class="view-details">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-header">
+                            <h3>Hiring</h3>
+                            <div class="card-icon hiring-icon"><i class="fas fa-briefcase"></i></div>
+                        </div>
+                        <p class="card-value">5</p>
+                        <a href="job-posting.html" class="view-details">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-header">
+                            <h3>Projects</h3>
+                            <div class="card-icon projects-icon"><i class="fas fa-folder"></i></div>
+                        </div>
+                        <p class="card-value">1</p>
+                        <a href="#" class="view-details">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="performance-report">
+                <div class="report-header">
+                    <h3>Performance Report</h3>
+                    <div class="dropdown">
+                        <span>Weekly</span> <i class="fas fa-caret-down"></i>
+                    </div>
+                </div>
+                <div class="chart-area">
+                    <img src="https://via.placeholder.com/600x200/e0e0e0/ffffff?text=Chart+Placeholder" alt="Performance Chart" class="chart-placeholder">
+                    <div class="chart-labels">
+                        <span>Monday</span>
+                        <span>Tuesday</span>
+                        <span>Wednesday</span>
+                        <span>Thursday</span>
+                        <span>Friday</span>
+                        <span>Saturday</span>
+                        <span>Sunday</span>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="upcoming-actions">
+                <h3>Upcoming Actions</h3>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="time">03:30 pm</span>
+                        <div class="action-details">
+                            <p class="action-title">Internal Meeting</p>
+                            <span class="action-description">Internal Meeting with Jade Pappire - UI designer</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="time">05:00 pm</span>
+                        <div class="action-details">
+                            <p class="action-title">Internal Meeting</p>
+                            <span class="action-description">Internal Meeting with Content team</span>
+                        </div>
+                    </div>
+                     <div class="action-item">
+                        <span class="time">07:00 pm</span>
+                        <div class="action-details">
+                            <p class="action-title">Interview</p>
+                            <span class="action-description">Interview with Achuyut - UI intern</span>
+                        </div>
+                    </div>
+                     <div class="action-item">
+                        <span class="time">05:00 pm</span>
+                        <div class="action-details">
+                            <p class="action-title">Internal Meeting</p>
+                            <span class="action-description">Internal Meeting with Content team</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="time">03:00 pm</span>
+                        <div class="action-details">
+                            <p class="action-title">Internal Meeting</p>
+                            <span class="action-description">Internal Meeting with Content team</span>
+                        </div>
+                    </div>
+                     <div class="action-item">
+                        <span class="time">05:00 pm</span>
+                        <div class="action-details">
+                            <p class="action-title">Internal Meeting</p>
+                            <span class="action-description">Internal Meeting with Content team</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="incoming-application">
+                <div class="section-header">
+                    <h3>Incoming Application</h3>
+                    <div class="application-controls">
+                        <button class="filter-btn"><i class="fas fa-filter"></i> Filter</button>
+                        <button class="see-all-btn">See all</button>
+                    </div>
+                </div>
+                <div class="application-cards">
+                    <div class="application-card">
+                        <img src="https://via.placeholder.com/50x50?text=E" alt="Applicant" class="applicant-pic">
+                        <h4>Elizabeth Filade</h4>
+                        <p class="experience-label">Latest Experience</p>
+                        <p class="experience-detail">Software Engineer at <span class="company">Tucked Inc.</span></p>
+                        <p class="date-applied">06 May 2025</p>
+                        <a href="#" class="view-resume">View Resume <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                     <div class="application-card">
+                        <img src="https://via.placeholder.com/50x50?text=A" alt="Applicant" class="applicant-pic">
+                        <h4>Andre Suares</h4>
+                        <p class="experience-label">Latest Experience</p>
+                        <p class="experience-detail">Software Engineer at <span class="company">Loreum ipsum</span></p>
+                        <p class="date-applied">06 May 2025</p>
+                        <a href="#" class="view-resume">View Resume <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                     <div class="application-card">
+                        <img src="https://via.placeholder.com/50x50?text=I" alt="Applicant" class="applicant-pic">
+                        <h4>Ishita Ashuth</h4>
+                        <p class="experience-label">Latest Experience</p>
+                        <p class="experience-detail">Product Designer at <span class="company">Lorem ipsum</span></p>
+                        <p class="date-applied">06 May 2025</p>
+                        <a href="#" class="view-resume">View Resume <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                     <div class="application-card">
+                        <img src="https://via.placeholder.com/50x50?text=I" alt="Applicant" class="applicant-pic">
+                        <h4>Ishita Ashuth</h4>
+                        <p class="experience-label">Latest Experience</p>
+                        <p class="experience-detail">Product Designer at <span class="company">Lorem ipsum</span></p>
+                        <p class="date-applied">06 May 2025</p>
+                        <a href="#" class="view-resume">View Resume <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

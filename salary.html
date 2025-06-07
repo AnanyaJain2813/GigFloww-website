@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIGFLOWW Salary Activities</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Global Variables and Resets */
+        :root {
+            --primary-blue: #007bff;
+            --light-blue: #e8f0fe;
+            --text-dark: #333;
+            --text-light: #666;
+            --text-grey: #999;
+            --border-color: #e0e0e0;
+            --background-grey: #f5f7f9;
+            --card-background: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --red-badge: #dc3545;
+            --success-green: #28a745;
+            --info-yellow: #ffc107;
+            --warning-orange: #fd7e14;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .dashboard-container { /* Re-using dashboard container for consistent layout */
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto auto 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .main-header {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            padding: 20px 30px;
+            background-color: var(--background-grey);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .main-header .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* --- Main Navigation (Sidebar) --- */
+        .main-nav {
+            grid-column: 1 / 2;
+            grid-row: 1 / 4;
+            background-color: var(--card-background);
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            margin-right: 10px;
+            background-color: var(--primary-blue);
+            object-fit: cover;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s, color 0.2s;
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .nav-icons {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background-grey);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 18px;
+            margin: 0 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .icon-circle:hover {
+            background-color: var(--border-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--red-badge);
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 50%;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+            margin-left: 10px;
+        }
+
+        /* --- Main Content Area for Salary Page --- */
+        .main-content-salary {
+            grid-column: 2 / 3;
+            grid-row: 2 / 4; /* Spans from below main header to end */
+            padding: 20px 30px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Two columns: table and detail panel */
+            gap: 20px;
+            align-items: start;
+        }
+
+        .salary-table-section {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .salary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .salary-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .salary-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1; /* Allow search to take more space */
+            min-width: 150px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 10px 10px 40px; /* Left padding for icon */
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-grey);
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--card-background);
+            color: var(--text-dark);
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .filter-btn i {
+            margin-right: 5px;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--background-grey);
+            border-color: var(--primary-blue);
+        }
+
+        .month-dropdown {
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .salary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .salary-table th, .salary-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .salary-table th {
+            background-color: var(--background-grey);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .salary-table td {
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .salary-table tbody tr.selected-row {
+            background-color: var(--light-blue); /* Highlight selected row */
+        }
+
+        .salary-table td.name-column {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .salary-table td .person-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .salary-table td .person-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .salary-table .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .salary-table .status-paid {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-green);
+        }
+        .salary-table .status-pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning-orange);
+        }
+
+
+        .salary-detail-panel {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: sticky; /* Keep it in view as table scrolls */
+            top: 20px; /* Adjust as needed */
+        }
+
+        .salary-detail-panel .person-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .salary-detail-panel .person-info img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .salary-detail-panel .person-info h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+
+        .salary-detail-panel .person-info p {
+            font-size: 14px;
+            color: var(--text-grey);
+            margin: 0;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color); /* Dashed border for details */
+            font-size: 15px;
+        }
+
+        .detail-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .detail-item .label {
+            color: var(--text-light);
+        }
+
+        .detail-item .value {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .view-payroll-history {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .view-payroll-history:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+
+        /* Basic Responsiveness */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto 1fr;
+            }
+
+            .main-nav {
+                grid-column: 1 / 2;
+                grid-row: 2 / 3;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 15px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+
+            .nav-brand {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                width: auto;
+            }
+
+            .nav-links li {
+                margin-bottom: 0;
+            }
+
+            .nav-links a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .nav-icons {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none;
+            }
+
+            .main-header {
+                grid-column: 1 / 2;
+                grid-row: 1 / 2;
+                border-bottom: none;
+            }
+
+            .main-content-salary {
+                grid-column: 1 / 2;
+                grid-row: 3 / 4;
+                grid-template-columns: 1fr; /* Stack table and detail panel */
+                padding: 20px;
+            }
+
+            .salary-detail-panel {
+                position: static; /* Remove sticky on smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header .logo {
+                font-size: 20px;
+            }
+
+            .salary-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .salary-controls {
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            .search-box, .filter-btn, .month-dropdown {
+                width: 100%;
+                max-width: none;
+            }
+
+            .salary-table th, .salary-table td {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="main-header">
+            <h1 class="logo">GIGFLOWW dashboard</h1>
+        </header>
+
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <img src="https://via.placeholder.com/30x30?text=G" alt="GigFloww Logo" class="nav-logo">
+                <span class="nav-title">GIGFLOWW</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="job-posting.html">Hiring</a></li>
+                <li><a href="salary.html" class="active">Salary</a></li>
+                <li><a href="#">Reviews</a></li>
+            </ul>
+            <div class="nav-icons">
+                <span class="icon-circle"><i class="fas fa-bell"></i><span class="notification-badge">1</span></span>
+                <span class="icon-circle"><i class="fas fa-cog"></i></span>
+                <img src="https://via.placeholder.com/40x40?text=P" alt="Profile Picture" class="profile-pic">
+            </div>
+        </nav>
+
+        <div class="main-content-salary">
+            <div class="salary-table-section">
+                <div class="salary-header">
+                    <h2>Salary Activities</h2>
+                    <div class="salary-controls">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search">
+                        </div>
+                        <button class="filter-btn"><i class="fas fa-filter"></i> Filter</button>
+                        <div class="month-dropdown">
+                            <span>May 2025</span> <i class="fas fa-caret-down"></i>
+                        </div>
+                        <div class="month-dropdown">
+                            <span>Monthly Salary +</span> <i class="fas fa-caret-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="salary-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Job Title</th>
+                            <th>Department</th>
+                            <th>Net Salary</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="selected-row">
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=E" alt="Elizabeth" class="person-pic">
+                                <span class="person-name">Elizabeth James</span>
+                            </td>
+                            <td>Designer</td>
+                            <td>Design</td>
+                            <td>$2,500</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=J" alt="James" class="person-pic">
+                                <span class="person-name">James Oyinkan</span>
+                            </td>
+                            <td>Visual Designer</td>
+                            <td>Design</td>
+                            <td>$2,100</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=A" alt="Areseen" class="person-pic">
+                                <span class="person-name">Areseen Vlamodir</span>
+                            </td>
+                            <td>Sales Manager</td>
+                            <td>Operation</td>
+                            <td>$4,700</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=K" alt="Kito" class="person-pic">
+                                <span class="person-name">Kito Ashuth</span>
+                            </td>
+                            <td>Content Writer</td>
+                            <td>Content</td>
+                            <td>$2,000</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=D" alt="Diti" class="person-pic">
+                                <span class="person-name">Diti Shreyas</span>
+                            </td>
+                            <td>Backend Engineer</td>
+                            <td>Engineering</td>
+                            <td>$2,500</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=A" alt="Alicia" class="person-pic">
+                                <span class="person-name">Alicia Shankur</span>
+                            </td>
+                            <td>Product Manager</td>
+                            <td>Product</td>
+                            <td>$4,000</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td class="name-column">
+                                <img src="https://via.placeholder.com/40x40?text=D" alt="Dario" class="person-pic">
+                                <span class="person-name">Dario Berik</span>
+                            </td>
+                            <td>Software Engineer</td>
+                            <td>Engineering</td>
+                            <td>$1,900</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="salary-detail-panel">
+                <div class="person-info">
+                    <img src="https://via.placeholder.com/80x80?text=E" alt="Elizabeth James">
+                    <h3>Elizabeth James</h3>
+                    <p>Designer</p>
+                </div>
+                <div class="detail-items">
+                    <div class="detail-item">
+                        <span class="label">Position</span>
+                        <span class="value">UI Head</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Department</span>
+                        <span class="value">UI Head</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Status</span>
+                        <span class="value status-active">Active</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Basic Salary</span>
+                        <span class="value">$3500</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Bonus & Overtime</span>
+                        <span class="value">$800</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Deduction</span>
+                        <span class="value">$0.00</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Net Salary</span>
+                        <span class="value">$3500</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Bank Details</span>
+                        <span class="value">234567890</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Payscale Rank</span>
+                        <span class="value">6/10</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Currency</span>
+                        <span class="value">INR</span>
+                    </div>
+                </div>
+                <a href="#" class="view-payroll-history">View Payroll History <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

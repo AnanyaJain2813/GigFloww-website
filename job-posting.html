@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIGFLOWW Job Posting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Global Variables and Resets */
+        :root {
+            --primary-blue: #007bff;
+            --light-blue: #e8f0fe;
+            --text-dark: #333;
+            --text-light: #666;
+            --text-grey: #999;
+            --border-color: #e0e0e0;
+            --background-grey: #f5f7f9;
+            --card-background: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --red-badge: #dc3545;
+            --success-green: #28a745;
+            --info-yellow: #ffc107;
+            --warning-orange: #fd7e14;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .dashboard-container { /* Re-using dashboard container for consistent layout */
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto auto 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .main-header {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            padding: 20px 30px;
+            background-color: var(--background-grey);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .main-header .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* --- Main Navigation (Sidebar) --- */
+        .main-nav {
+            grid-column: 1 / 2;
+            grid-row: 1 / 4;
+            background-color: var(--card-background);
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            margin-right: 10px;
+            background-color: var(--primary-blue);
+            object-fit: cover;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s, color 0.2s;
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .nav-icons {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background-grey);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 18px;
+            margin: 0 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .icon-circle:hover {
+            background-color: var(--border-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--red-badge);
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 50%;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+            margin-left: 10px;
+        }
+
+        /* --- Main Content Area for Job Posting Page --- */
+        .main-content-job-posting {
+            grid-column: 2 / 3;
+            grid-row: 2 / 4; /* Spans from below main header to end */
+            padding: 20px 30px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 2fr 1.2fr; /* Form on left, side panels on right */
+            gap: 20px;
+            align-items: start;
+        }
+
+        .job-posting-form-section {
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .job-posting-form-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .job-posting-form-section p {
+            font-size: 14px;
+            color: var(--text-grey);
+            margin-bottom: 30px;
+        }
+
+        .form-group-job {
+            margin-bottom: 25px;
+        }
+
+        .form-group-job label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-group-job input[type="text"],
+        .form-group-job select,
+        .form-group-job textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+            background-color: var(--background-grey); /* Input background like in image */
+        }
+
+        .form-group-job input[type="text"]:focus,
+        .form-group-job select:focus,
+        .form-group-job textarea:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-group-job select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23666666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px;
+        }
+
+        .form-group-job textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* --- Side Panels for Job Posting --- */
+        .job-posting-side-panels {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-panel-card {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: sticky; /* Keep it in view as form scrolls */
+            top: 20px; /* Adjust as needed */
+        }
+
+        .side-panel-card .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .side-panel-card .header h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .side-panel-card .header .see-all-btn {
+            background: none;
+            border: none;
+            color: var(--primary-blue);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .posting-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .posting-item:last-child {
+            border-bottom: none;
+        }
+
+        .posting-item .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background-color: var(--light-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: var(--primary-blue);
+            flex-shrink: 0;
+        }
+
+        .posting-item .details h5 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+
+        .posting-item .details p {
+            font-size: 13px;
+            color: var(--text-grey);
+            margin: 0;
+        }
+
+        .ai-assist-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .ai-assist-section img {
+            width: 100px; /* Adjust size as needed */
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .ai-assist-section p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .ai-assist-section button {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .ai-assist-section button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Basic Responsiveness */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto 1fr;
+            }
+
+            .main-nav {
+                grid-column: 1 / 2;
+                grid-row: 2 / 3;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 15px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+
+            .nav-brand {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                width: auto;
+            }
+
+            .nav-links li {
+                margin-bottom: 0;
+            }
+
+            .nav-links a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .nav-icons {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none;
+            }
+
+            .main-header {
+                grid-column: 1 / 2;
+                grid-row: 1 / 2;
+                border-bottom: none;
+            }
+
+            .main-content-job-posting {
+                grid-column: 1 / 2;
+                grid-row: 3 / 4;
+                grid-template-columns: 1fr; /* Stack form and side panels */
+                padding: 20px;
+            }
+
+            .side-panel-card {
+                position: static; /* Remove sticky on smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header .logo {
+                font-size: 20px;
+            }
+
+            .job-posting-form-section h2 {
+                font-size: 20px;
+            }
+             .job-posting-form-section p {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="main-header">
+            <h1 class="logo">GIGFLOWW dashboard</h1>
+        </header>
+
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <img src="https://via.placeholder.com/30x30?text=G" alt="GigFloww Logo" class="nav-logo">
+                <span class="nav-title">GIGFLOWW</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="job-posting.html" class="active">Hiring</a></li>
+                <li><a href="salary.html">Salary</a></li>
+                <li><a href="#">Reviews</a></li>
+            </ul>
+            <div class="nav-icons">
+                <span class="icon-circle"><i class="fas fa-bell"></i><span class="notification-badge">1</span></span>
+                <span class="icon-circle"><i class="fas fa-cog"></i></span>
+                <img src="https://via.placeholder.com/40x40?text=P" alt="Profile Picture" class="profile-pic">
+            </div>
+        </nav>
+
+        <div class="main-content-job-posting">
+            <div class="job-posting-form-section">
+                <h2>Job Posting</h2>
+                <p>Post Job to new Applicants for your job post</p>
+
+                <h3>Fill In Job Details</h3>
+
+                <form>
+                    <div class="form-group-job">
+                        <label for="role">Role</label>
+                        <input type="text" id="role" placeholder="e.g. UI/UX Designer">
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="skills">Skills Required</label>
+                        <input type="text" id="skills" placeholder="Enter required skills (comma separated)">
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="experience">Years of Experience / Experience Level</label>
+                        <select id="experience">
+                            <option value="">e.g. 0-2 years</option>
+                            <option value="junior">Junior (0-2 years)</option>
+                            <option value="mid">Mid-level (3-5 years)</option>
+                            <option value="senior">Senior (5+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="employment-type">Employment Type</label>
+                        <select id="employment-type">
+                            <option value="">e.g. Full-time</option>
+                            <option value="full-time">Full-time</option>
+                            <option value="part-time">Part-time</option>
+                            <option value="contract">Contract</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="workplace-type">Workplace Type</label>
+                        <select id="workplace-type">
+                            <option value="">e.g. Hybrid</option>
+                            <option value="onsite">On-site</option>
+                            <option value="remote">Remote</option>
+                            <option value="hybrid">Hybrid</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="stipend">Stipend</label>
+                        <input type="text" id="stipend" placeholder="Enter the payment per month">
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="num-opening">No of Opening (If it is more than 1 one)</label>
+                        <input type="text" id="num-opening" placeholder="e.g. 2">
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="job-description">Job Description</label>
+                        <textarea id="job-description" placeholder=""></textarea>
+                    </div>
+
+                    <div class="form-group-job">
+                        <label for="relevant-links">Relevant Links</label>
+                        <input type="text" id="relevant-links" placeholder="Enter link">
+                    </div>
+
+                    </form>
+            </div>
+
+            <div class="job-posting-side-panels">
+                <div class="side-panel-card">
+                    <div class="header">
+                        <h4>Manage Posting</h4>
+                        <button class="see-all-btn">See all</button>
+                    </div>
+                    <div class="posting-item">
+                        <div class="logo">U</div>
+                        <div class="details">
+                            <h5>UI Designer Intern (Remote)</h5>
+                            <p>articks studio</p>
+                            <p>Bangalore, India</p>
+                            <p>Open vacancy: 06 May 2025</p>
+                            <p><span><i class="fas fa-eye"></i> 2K</span> <span><i class="fas fa-users"></i> 5K</span> <span><i class="fas fa-file-alt"></i> 100</span></p>
+                        </div>
+                    </div>
+                    <div class="posting-item">
+                        <div class="logo">N</div>
+                        <div class="details">
+                            <h5>UI Designer Intern (Remote)</h5>
+                            <p>articks studio</p>
+                            <p>Bangalore, India</p>
+                            <p>Open vacancy: 06 May 2025</p>
+                            <p><span><i class="fas fa-eye"></i> 2K</span> <span><i class="fas fa-users"></i> 5K</span> <span><i class="fas fa-file-alt"></i> 100</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="side-panel-card">
+                    <div class="header">
+                        <h4>Use AI to write</h4>
+                    </div>
+                    <div class="ai-assist-section">
+                        <img src="https://via.placeholder.com/100x100/e0e0e0/ffffff?text=AI+Icon" alt="AI Assistant">
+                        <p>Write captivating and informative job description with AI.</p>
+                        <button>Write with AI</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
